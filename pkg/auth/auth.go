@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"time"
-	"fmt"
+	// "fmt"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -11,15 +11,15 @@ import (
 var jwtKey = []byte("supersecretkey")
 
 type JWTClaim struct {
-	Name string `json:"name"`
+	Username string `json:"username"`
 	Password string `json:"password"`
 	jwt.StandardClaims
 }
 
-func GenerateJWT(name string, password string) (tokenString string, err error){
+func GenerateJWT(username string, password string) (tokenString string, err error){
 	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &JWTClaim{
-		Name: name,
+		Username: username,
 		Password: password,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
@@ -37,7 +37,6 @@ func ValidateToken(signedToken string) (err error){
 			return []byte(jwtKey), nil
 		},
 	)
-	fmt.Println("token: ", string(jwtKey))
 	if err != nil{
 		return
 	}

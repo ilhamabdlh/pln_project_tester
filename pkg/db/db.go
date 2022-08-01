@@ -3,6 +3,7 @@ package db
 import (
 	"log"
 	"pln/jatim/pkg/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

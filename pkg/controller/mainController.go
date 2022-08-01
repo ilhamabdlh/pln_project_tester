@@ -12,8 +12,12 @@ type handler struct {
 	DB *gorm.DB
 }
 
+type PingReqBody struct {
+	IpAddresss	string	`json:"ip_address"`
+}
+
 type UserReqBody struct {
-	Name       string `json:"name"`
+	Username       string `json:"username"`
 	Password      string `json:"password"`
 	Previlage string `json:"previlage"`
 }
@@ -50,27 +54,29 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 		DB: db,
 	}
 
-	
-	r.POST("/register", h.Register)
 	r.POST("/login", GenerateToken)
 
 	routes := r.Group("/ip").Use(middleware.Auth())
 	
-	
+	routes.POST("/register", h.Register)
 	routes.GET("/user", h.GetUsers)
 	routes.GET("/user/:id", h.GetUser)
 	routes.PUT("/user/:id", h.UpdateUser)
 	routes.DELETE("/user/:id", h.DeleteUser)
 
-	routes.POST("/setip", h.AddIpAddress)
+	routes.POST("/address", h.AddIpAddress)
 	routes.GET("/address", h.GetIps)
 	routes.GET("/address/:id", h.GetIp)
-	routes.PUT("/address/:id", h.UpdateIp)
+	routes.GET("/address/filter", h.GetSearch)
+	routes.PUT("/address/:id", h.UpdateIpByAdmin)
+	routes.PUT("/addressed/:id", h.UpdateIpByUser)
 	routes.DELETE("/address/:id", h.DeleteIp)
 
 	routes.POST("/group", h.AddGroup)
 	routes.GET("/group", h.GetGroup)
 	routes.DELETE("/group/:id", h.DeleteGroup)
+
 	routes.GET("/ping", h.PingIpAddress)
+	routes.POST("/ping", h.SinglePing)
 
 }

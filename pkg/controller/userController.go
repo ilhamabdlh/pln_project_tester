@@ -19,7 +19,7 @@ func (h handler) Register(c *gin.Context) {
 
 	var user models.Users
 
-	user.Name = body.Name
+	user.Username = body.Username
 	user.Password = body.Password
 	user.Previlage = body.Previlage
 
@@ -81,7 +81,7 @@ func (h handler) UpdateUser(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	user.Name = body.Name
+	user.Username = body.Username
 	user.Password = body.Password
 	user.Previlage = body.Previlage
 
