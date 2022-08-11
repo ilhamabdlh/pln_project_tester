@@ -5,7 +5,7 @@ import (
 	"pln/jatim/pkg/controller"
 	"pln/jatim/pkg/db"
 	"github.com/spf13/viper"
-	cors "github.com/rs/cors/wrapper/gin"
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
