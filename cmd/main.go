@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"github.com/gin-gonic/gin"
 	"pln/jatim/pkg/controller"
 	"pln/jatim/pkg/db"
@@ -16,7 +17,7 @@ func main() {
 	dbUrl := viper.Get("DB_URL").(string)
 
 	r := gin.Default()
-	router.Use(cors.New(cors.Config{
+	r.Use(cors.New(cors.Config{
            AllowOrigins:     []string{"https://foo.com"},
            AllowMethods:     []string{"PUT", "PATCH"},
            AllowHeaders:     []string{"Origin"},
