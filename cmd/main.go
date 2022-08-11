@@ -5,6 +5,7 @@ import (
 	"pln/jatim/pkg/controller"
 	"pln/jatim/pkg/db"
 	"github.com/spf13/viper"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
 func main() {
@@ -15,6 +16,7 @@ func main() {
 	dbUrl := viper.Get("DB_URL").(string)
 
 	r := gin.Default()
+	r.Use(cors.Default())
 	h := db.Init(dbUrl)
 
 
