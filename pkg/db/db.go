@@ -20,7 +20,7 @@ func Init(url string) *gorm.DB {
 
 	Database.AutoMigrate(&models.Users{})
 	Database.AutoMigrate(&models.IpAddress{})
-	Database.AutoMigrate(&models.Groups{})
+	Database.AutoMigrate(&models.Group{})
 
 	return Database
 }

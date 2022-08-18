@@ -25,6 +25,7 @@ func (h handler) AddIpAddress(c *gin.Context) {
 	ip.DescriptionOne = body.DescriptionOne
 	ip.DescriptionTwo = body.DescriptionTwo
 	ip.DescriptionThree = body.DescriptionThree
+	ip.Reason = body.Reason
 	ip.IpGateway = body.IpGateway
 	ip.Location = body.Location
 	ip.ActivityStatus = body.ActivityStatus
@@ -104,6 +105,7 @@ func (h handler) UpdateIpByAdmin(c *gin.Context) {
 	ip.DescriptionOne = body.DescriptionOne
 	ip.DescriptionTwo = body.DescriptionTwo
 	ip.DescriptionThree = body.DescriptionThree
+	ip.Reason = body.Reason
 	ip.IpGateway = body.IpGateway
 	ip.Location = body.Location
 	ip.ActivityStatus = body.ActivityStatus
@@ -143,6 +145,7 @@ func (h handler) UpdateIpByUser(c *gin.Context) {
 	ip.DescriptionOne = body.DescriptionOne
 	ip.DescriptionTwo = body.DescriptionTwo
 	ip.DescriptionThree = body.DescriptionThree
+	ip.Reason = body.Reason
 	ip.IpGateway = body.IpGateway
 	ip.Location = body.Location
 	ip.ActivityStatus = body.ActivityStatus

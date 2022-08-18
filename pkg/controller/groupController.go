@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"fmt"
 	//"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +17,8 @@ func (h handler) AddGroup(c *gin.Context){
 		return
 	}
 
-	var group models.Groups
-	
+	var group models.Group
+
 	group.GroupSet = body.GroupSet
 	group.Group = body.Group
 	group.IpClass = body.IpClass
@@ -31,29 +32,60 @@ func (h handler) AddGroup(c *gin.Context){
 	c.JSON(http.StatusCreated, &group)
 }
 
+func (h handler) UpdateGroup(c *gin.Context) {
+	id := c.Param("id")
+	body := GroupReqBody{}
+
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	var group models.Group
+
+	if result := h.DB.First(&group, id); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+	group.GroupSet = body.GroupSet
+	group.Group = body.Group
+	group.IpClass = body.IpClass
+	group.Netmask = body.Netmask
+	group.IpGateway = body.IpGateway
+
+	h.DB.Save(&group)
+
+	c.JSON(http.StatusOK, &group)
+}
+
 func (h handler) GetGroup(c *gin.Context){
 	var arrIpAdd []models.IpAddress //value of struct ipAddress
-	var arrGroup models.Groups
+	var arrIpAddress models.IpAddress
 	var arrGroups []models.Groups
+	var arrGroupes models.Groups
+	var arrGroup []models.Group
 
 	if result := h.DB.Find(&arrIpAdd); result.Error != nil{
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
-	mapFilter := make(map[string]bool)
+	
 
-	for _, v := range arrIpAdd{
+	if result := h.DB.Find(&arrGroup); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+	fmt.Println(arrGroup)
 
-		if _, ok := mapFilter[v.Group]; !ok{
+	for _, v:= range arrGroup{
+		arrGroupes.ID = v.ID
+		arrGroupes.GroupSet = v.GroupSet
+		arrGroupes.Group = v.Group
+		arrGroupes.IpClass = v.IpClass
+		arrGroupes.Netmask = v.Netmask
+		arrGroupes.IpGateway = v.IpGateway
 
-			mapFilter[v.Group]=true
-			arrGroup.GroupSet = v.GroupSet
-			arrGroup.Group = v.Group
-			arrGroup.IpClass = v.ClassIp
-			arrGroup.Netmask = v.Netmask
-			arrGroup.IpGateway = v.IpGateway
-			arrGroups = append(arrGroups, arrGroup)	
-		}
+		arrGroups = append(arrGroups, arrGroupes)	
 
 	}
 
@@ -61,6 +93,8 @@ func (h handler) GetGroup(c *gin.Context){
 		for j:= 0; j < len(arrIpAdd); j++{
 			if arrGroups[i].Group == arrIpAdd[j].Group{
 				arrGroups[i].Data = append(arrGroups[i].Data, arrIpAdd[j])
+			} else {
+				arrGroups[i].Data = append(arrGroups[i].Data, arrIpAddress)
 			}
 		}
 	}
@@ -70,7 +104,7 @@ func (h handler) GetGroup(c *gin.Context){
 
 func (h handler) DeleteGroup(c *gin.Context){
 	id := c.Param("id")
-	var group models.Groups
+	var group models.Group
 	
 	if result := h.DB.First(&group, id); result.Error != nil{
 		c.AbortWithError(http.StatusNotFound, result.Error)

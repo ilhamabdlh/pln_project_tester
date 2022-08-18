@@ -22,13 +22,21 @@ type UserReqBody struct {
 	Previlage string `json:"previlage"`
 }
 
-type GroupReqBody struct{
+type GroupReqBodys struct{
 	GroupSet string `json:"group_set,omitempty"`
 	Group string `json:"group,omitempty"`
 	IpClass string `json:"ip_class,omitempty"`
 	Netmask string `json:"netmask,omitempty"`
 	IpGateway string `json:"ip_gateway,omitempty"`
 	Data []IpReqBody `json:"data,omitempty"`
+}
+
+type GroupReqBody struct{
+	GroupSet string `json:"group_set,omitempty"`
+	Group string `json:"group,omitempty"`
+	IpClass string `json:"ip_class,omitempty"`
+	Netmask string `json:"netmask,omitempty"`
+	IpGateway string `json:"ip_gateway,omitempty"`
 }
 
 type IpReqBody struct {
@@ -39,6 +47,7 @@ type IpReqBody struct {
 	DescriptionOne string `json:"description_1,omitempty"`
 	DescriptionTwo string `json:"description_2,omitempty"`
 	DescriptionThree string `json:"description_3,omitempty"`
+	Reason string	`json:"reason,omitempty"`
 	IpGateway string `json:"ip_gateway,omitempty"`
 	Location string `json:"location,omitempty"`
 	ActivityStatus string `json:"activity_status,omitempty"`
@@ -74,6 +83,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 
 	routes.POST("/group", h.AddGroup)
 	routes.GET("/group", h.GetGroup)
+	routes.PUT("/group/:id", h.UpdateGroup)
 	routes.DELETE("/group/:id", h.DeleteGroup)
 
 	routes.GET("/ping", h.PingIpAddress)
